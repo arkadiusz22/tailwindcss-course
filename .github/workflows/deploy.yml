@@ -9,6 +9,12 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages 
+permissions: 
+  contents: read 
+  pages: write 
+  id-token: write
+
 jobs:
   build:
 
@@ -16,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -41,12 +47,14 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: public
+        name: github-pages-${{ github.run_id }}
 
     # Step 7: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
-
+      with:
+        artifact_name: github-pages-${{ github.run_id }}
