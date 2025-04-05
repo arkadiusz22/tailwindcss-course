@@ -11,76 +11,82 @@
 
     <script async defer>
       window.onload = () => {
-        const [
-          mobileMenuIcon,
-          ticketsMobileMenuButton,
-          ticketsMenuMobileItem,
-          previousImageButton,
-          nextImageButton,
-          carousel,
-          darkModeToggle,
-          homeButton,
-          homeMobileButton,
-          lineupButton,
-          lineupMobileButton,
-          singleTicketButton,
-          singleTicketMobileButton,
-          weekTicketButton,
-          weekTicketMobileButton,
-          supportButton,
-          supportMobileButton,
-          lineupSection,
-          ticketsSection,
-          supportSection,
-        ] = [
-          "mobile-menu-button",
-          "tickets-menu-button-mobile",
-          "tickets-menu-item-mobile",
-          "previous",
-          "next",
-          "carousel",
-          "dark-mode-toggle",
-          "home-button",
-          "home-button-mobile",
-          "lineup-button",
-          "lineup-button-mobile",
-          "single-ticket-button",
-          "single-ticket-button-mobile",
-          "week-ticket-button",
-          "week-ticket-button-mobile",
-          "support-button",
-          "support-button-mobile",
-          "lineup-section",
-          "tickets-section",
-          "support-section",
-        ].map((id) => document.getElementById(id));
+        const elements = {
+          mobileMenuIcon: document.getElementById("mobile-menu-button"),
+          ticketsMobileMenuButton: document.getElementById(
+            "tickets-menu-button-mobile",
+          ),
+          ticketsMenuMobileItem: document.getElementById(
+            "tickets-menu-item-mobile",
+          ),
+          previousImageButton: document.getElementById("previous"),
+          nextImageButton: document.getElementById("next"),
+          carousel: document.getElementById("carousel"),
+          darkModeToggle: document.getElementById("dark-mode-toggle"),
+          homeButtons: [
+            document.getElementById("home-button"),
+            document.getElementById("home-button-mobile"),
+          ],
+          lineupButtons: [
+            document.getElementById("lineup-button"),
+            document.getElementById("lineup-button-mobile"),
+          ],
+          singleTicketButtons: [
+            document.getElementById("single-ticket-button"),
+            document.getElementById("single-ticket-button-mobile"),
+          ],
+          weekTicketButtons: [
+            document.getElementById("week-ticket-button"),
+            document.getElementById("week-ticket-button-mobile"),
+          ],
+          supportButtons: [
+            document.getElementById("support-button"),
+            document.getElementById("support-button-mobile"),
+          ],
+          lineupSection: document.getElementById("lineup-section"),
+          ticketsSection: document.getElementById("tickets-section"),
+          supportSection: document.getElementById("support-section"),
+        };
 
-        mobileMenuIcon.addEventListener("click", () => {
-          if (mobileMenuIcon.classList.contains("open")) {
-            mobileMenuIcon.classList.remove("open");
-          } else {
-            mobileMenuIcon.classList.add("open");
-          }
+        function scrollToSection(section) {
+          const stickyHeaderHeight = 76; // px
+          const y =
+            section.getBoundingClientRect().top +
+            window.pageYOffset -
+            stickyHeaderHeight;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+
+        function closeMobileMenu() {
+          elements.mobileMenuIcon.classList.remove("open");
+          elements.ticketsMenuMobileItem.classList.remove("open");
+        }
+
+        function toggleClass(element, className) {
+          element.classList.toggle(className);
+        }
+
+        elements.mobileMenuIcon.addEventListener("click", () => {
+          toggleClass(elements.mobileMenuIcon, "open");
         });
 
-        ticketsMobileMenuButton.addEventListener("click", () => {
-          if (ticketsMenuMobileItem.classList.contains("open")) {
-            ticketsMenuMobileItem.classList.remove("open");
-          } else {
-            ticketsMenuMobileItem.classList.add("open");
-          }
+        elements.ticketsMobileMenuButton.addEventListener("click", () => {
+          toggleClass(elements.ticketsMenuMobileItem, "open");
         });
 
-        previousImageButton.addEventListener("click", () => {
-          const itemWidth = carousel.getElementsByTagName("div")[0].clientWidth;
-          carousel.scrollLeft -= itemWidth;
-        });
-        nextImageButton.addEventListener("click", () => {
-          const itemWidth = carousel.getElementsByTagName("div")[0].clientWidth;
-          carousel.scrollLeft += itemWidth;
+        elements.previousImageButton.addEventListener("click", () => {
+          const itemWidth =
+            elements.carousel.getElementsByTagName("div")[0].clientWidth;
+          elements.carousel.scrollLeft -= itemWidth;
         });
 
-        darkModeToggle.addEventListener("click", () => {
+        elements.nextImageButton.addEventListener("click", () => {
+          const itemWidth =
+            elements.carousel.getElementsByTagName("div")[0].clientWidth;
+          elements.carousel.scrollLeft += itemWidth;
+        });
+
+        elements.darkModeToggle.addEventListener("click", () => {
           if (document.body.classList.contains("dark")) {
             document.body.classList.remove("dark");
           } else {
@@ -88,73 +94,35 @@
           }
         });
 
-        homeButton.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-
-        homeMobileButton.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          mobileMenuIcon.classList.remove("open");
-          ticketsMenuMobileItem.classList.remove("open");
+        elements.homeButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (button.id.includes("mobile")) closeMobileMenu();
+          });
         });
 
         [
-          singleTicketButton,
-          singleTicketMobileButton,
-          weekTicketButton,
-          weekTicketMobileButton,
+          ...elements.singleTicketButtons,
+          ...elements.weekTicketButtons,
         ].forEach((button) => {
           button.addEventListener("click", () => {
-            const y =
-              ticketsSection.getBoundingClientRect().top +
-              window.pageYOffset -
-              76;
-            window.scrollTo({ top: y, behavior: "smooth" });
+            scrollToSection(elements.ticketsSection);
+            if (button.id.includes("mobile")) closeMobileMenu();
           });
         });
 
-        [singleTicketMobileButton, weekTicketMobileButton].forEach((button) => {
+        elements.lineupButtons.forEach((button) => {
           button.addEventListener("click", () => {
-            const y =
-              ticketsSection.getBoundingClientRect().top +
-              window.pageYOffset -
-              76;
-            window.scrollTo({ top: y, behavior: "smooth" });
-            mobileMenuIcon.classList.remove("open");
-            ticketsMenuMobileItem.classList.remove("open");
+            scrollToSection(elements.lineupSection);
+            if (button.id.includes("mobile")) closeMobileMenu();
           });
         });
 
-        lineupButton.addEventListener("click", () => {
-          const y =
-            lineupSection.getBoundingClientRect().top + window.pageYOffset - 76;
-          window.scrollTo({ top: y, behavior: "smooth" });
-        });
-
-        lineupMobileButton.addEventListener("click", () => {
-          const y =
-            lineupSection.getBoundingClientRect().top + window.pageYOffset - 76;
-          window.scrollTo({ top: y, behavior: "smooth" });
-          mobileMenuIcon.classList.remove("open");
-          ticketsMenuMobileItem.classList.remove("open");
-        });
-
-        supportButton.addEventListener("click", () => {
-          const y =
-            supportSection.getBoundingClientRect().top +
-            window.pageYOffset -
-            76;
-          window.scrollTo({ top: y, behavior: "smooth" });
-        });
-
-        supportMobileButton.addEventListener("click", () => {
-          const y =
-            supportSection.getBoundingClientRect().top +
-            window.pageYOffset -
-            76;
-          window.scrollTo({ top: y, behavior: "smooth" });
-          mobileMenuIcon.classList.remove("open");
-          ticketsMenuMobileItem.classList.remove("open");
+        elements.supportButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            scrollToSection(elements.supportSection);
+            if (button.id.includes("mobile")) closeMobileMenu();
+          });
         });
       };
     </script>
