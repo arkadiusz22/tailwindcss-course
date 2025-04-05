@@ -11,7 +11,50 @@
 
     <script async defer>
       window.onload = () => {
-        const mobileMenuIcon = document.getElementById("mobile-menu-button");
+        const [
+          mobileMenuIcon,
+          ticketsMobileMenuButton,
+          ticketsMenuMobileItem,
+          previousImageButton,
+          nextImageButton,
+          carousel,
+          darkModeToggle,
+          homeButton,
+          homeMobileButton,
+          lineupButton,
+          lineupMobileButton,
+          singleTicketButton,
+          singleTicketMobileButton,
+          weekTicketButton,
+          weekTicketMobileButton,
+          supportButton,
+          supportMobileButton,
+          lineupSection,
+          ticketsSection,
+          supportSection,
+        ] = [
+          "mobile-menu-button",
+          "tickets-menu-button-mobile",
+          "tickets-menu-item-mobile",
+          "previous",
+          "next",
+          "carousel",
+          "dark-mode-toggle",
+          "home-button",
+          "home-button-mobile",
+          "lineup-button",
+          "lineup-button-mobile",
+          "single-ticket-button",
+          "single-ticket-button-mobile",
+          "week-ticket-button",
+          "week-ticket-button-mobile",
+          "support-button",
+          "support-button-mobile",
+          "lineup-section",
+          "tickets-section",
+          "support-section",
+        ].map((id) => document.getElementById(id));
+
         mobileMenuIcon.addEventListener("click", () => {
           if (mobileMenuIcon.classList.contains("open")) {
             mobileMenuIcon.classList.remove("open");
@@ -20,28 +63,23 @@
           }
         });
 
-        const ticketsMenuItem = document.getElementById("tickets-menu-item");
-        ticketsMenuItem.addEventListener("click", () => {
-          if (ticketsMenuItem.classList.contains("open")) {
-            ticketsMenuItem.classList.remove("open");
+        ticketsMobileMenuButton.addEventListener("click", () => {
+          if (ticketsMenuMobileItem.classList.contains("open")) {
+            ticketsMenuMobileItem.classList.remove("open");
           } else {
-            ticketsMenuItem.classList.add("open");
+            ticketsMenuMobileItem.classList.add("open");
           }
         });
 
-        const previousButton = document.getElementById("previous");
-        const nextButton = document.getElementById("next");
-        const carousel = document.getElementById("carousel");
-        previousButton.addEventListener("click", () => {
+        previousImageButton.addEventListener("click", () => {
           const itemWidth = carousel.getElementsByTagName("div")[0].clientWidth;
           carousel.scrollLeft -= itemWidth;
         });
-        nextButton.addEventListener("click", () => {
+        nextImageButton.addEventListener("click", () => {
           const itemWidth = carousel.getElementsByTagName("div")[0].clientWidth;
           carousel.scrollLeft += itemWidth;
         });
 
-        const darkModeToggle = document.getElementById("dark-mode-toggle");
         darkModeToggle.addEventListener("click", () => {
           if (document.body.classList.contains("dark")) {
             document.body.classList.remove("dark");
@@ -49,13 +87,82 @@
             document.body.classList.add("dark");
           }
         });
+
+        homeButton.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        homeMobileButton.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          mobileMenuIcon.classList.remove("open");
+          ticketsMenuMobileItem.classList.remove("open");
+        });
+
+        [
+          singleTicketButton,
+          singleTicketMobileButton,
+          weekTicketButton,
+          weekTicketMobileButton,
+        ].forEach((button) => {
+          button.addEventListener("click", () => {
+            const y =
+              ticketsSection.getBoundingClientRect().top +
+              window.pageYOffset -
+              76;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          });
+        });
+
+        [singleTicketMobileButton, weekTicketMobileButton].forEach((button) => {
+          button.addEventListener("click", () => {
+            const y =
+              ticketsSection.getBoundingClientRect().top +
+              window.pageYOffset -
+              76;
+            window.scrollTo({ top: y, behavior: "smooth" });
+            mobileMenuIcon.classList.remove("open");
+            ticketsMenuMobileItem.classList.remove("open");
+          });
+        });
+
+        lineupButton.addEventListener("click", () => {
+          const y =
+            lineupSection.getBoundingClientRect().top + window.pageYOffset - 76;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        });
+
+        lineupMobileButton.addEventListener("click", () => {
+          const y =
+            lineupSection.getBoundingClientRect().top + window.pageYOffset - 76;
+          window.scrollTo({ top: y, behavior: "smooth" });
+          mobileMenuIcon.classList.remove("open");
+          ticketsMenuMobileItem.classList.remove("open");
+        });
+
+        supportButton.addEventListener("click", () => {
+          const y =
+            supportSection.getBoundingClientRect().top +
+            window.pageYOffset -
+            76;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        });
+
+        supportMobileButton.addEventListener("click", () => {
+          const y =
+            supportSection.getBoundingClientRect().top +
+            window.pageYOffset -
+            76;
+          window.scrollTo({ top: y, behavior: "smooth" });
+          mobileMenuIcon.classList.remove("open");
+          ticketsMenuMobileItem.classList.remove("open");
+        });
       };
     </script>
   </head>
 
   <body class="dark">
-    <main class="bg-zinc-200 pb-40 dark:bg-zinc-900">
-      <header class="text-zinc-200">
+    <main class="bg-zinc-200 pb-20 dark:bg-zinc-900">
+      <header class="sticky top-0 z-10 text-zinc-200">
         <!-- Dark Mode Toggle -->
         <button
           id="dark-mode-toggle"
@@ -73,9 +180,7 @@
           ></span>
         </button>
 
-        <nav
-          class="sticky top-0 z-10 flex bg-gradient-to-r from-rose-500 to-pink-500"
-        >
+        <nav class="flex bg-gradient-to-r from-rose-500 to-pink-500">
           <!-- Logo and title -->
           <div class="flex items-center gap-2 p-2">
             <img
@@ -108,135 +213,132 @@
             <div
               class="absolute top-[76px] left-0 hidden w-full bg-gradient-to-r from-rose-500 to-pink-500 peer-open:block"
             >
+              <button id="home-button-mobile" class="mobile-menu-item">
+                Home
+              </button>
+              <button id="lineup-button-mobile" class="mobile-menu-item">
+                Lineup
+              </button>
               <div
-                class="relative flex h-full cursor-pointer items-center justify-center p-4 font-bold text-pink-200 transition-colors hover:bg-white/10 hover:text-zinc-200"
-              >
-                <span>Home</span>
-              </div>
-              <div
-                class="relative flex h-full cursor-pointer items-center justify-center p-4 font-bold text-pink-200 transition-colors hover:bg-white/10 hover:text-zinc-200"
-              >
-                <span>Lineup</span>
-              </div>
-              <div
-                id="tickets-menu-item"
+                id="tickets-menu-item-mobile"
                 class="group relative h-full cursor-pointer text-pink-200 transition-colors hover:bg-white/10 hover:text-zinc-200"
               >
-                <div class="p-4 text-center font-bold">Tickets</div>
-                <div class="hidden group-open:block">
-                  <div
+                <button
+                  id="tickets-menu-button-mobile"
+                  class="w-full p-4 text-center font-bold"
+                >
+                  Tickets
+                </button>
+                <div class="hidden group-open:flex group-open:flex-col">
+                  <button
+                    id="single-ticket-button-mobile"
                     class="relative p-4 text-center text-pink-200 transition-colors ease-in-out hover:bg-white/5 hover:text-zinc-200"
                   >
-                    <span>Single day ticket</span>
-                  </div>
-                  <div
+                    Single day ticket
+                  </button>
+                  <button
+                    id="week-ticket-button-mobile"
                     class="relative p-4 text-center text-pink-200 transition-colors ease-in-out hover:bg-white/5 hover:text-zinc-200"
                   >
-                    <span>7 day ticket</span>
-                  </div>
+                    7 day ticket
+                  </button>
                 </div>
               </div>
-              <div
-                class="relative flex h-full cursor-pointer items-center justify-center p-4 font-bold text-pink-200 transition-colors hover:bg-white/10 hover:text-zinc-200"
-              >
-                <span>Support</span>
-              </div>
+              <button id="support-button-mobile" class="mobile-menu-item">
+                Support
+              </button>
             </div>
           </div>
 
           <!-- Desktop Menu -->
           <div class="hidden flex-1 items-center justify-end md:flex">
-            <div class="menu-item">
-              <span>Home</span>
-            </div>
-            <div class="menu-item">
-              <span>Lineup</span>
-            </div>
+            <button id="home-button" class="menu-item">Home</button>
+            <button id="lineup-button" class="menu-item">Lineup</button>
             <div class="menu-item group">
               <span>Tickets</span>
               <div
-                class="absolute top-full right-0 hidden rounded-b-md bg-pink-500 text-right whitespace-nowrap group-hover:block"
+                class="absolute top-full right-0 hidden flex-col rounded-b-md bg-pink-500 text-right whitespace-nowrap group-hover:flex"
               >
-                <div
+                <button
+                  id="single-ticket-button"
                   class="cursor-pointer p-4 font-bold text-pink-200 transition-colors ease-in-out hover:bg-white/5 hover:text-zinc-200"
                 >
                   Single day ticket
-                </div>
-                <div
+                </button>
+                <button
+                  id="week-ticket-button"
                   class="cursor-pointer p-4 font-bold text-pink-200 transition-colors ease-in-out hover:bg-white/5 hover:text-zinc-200"
                 >
                   7 day ticket
-                </div>
+                </button>
               </div>
             </div>
-            <div class="menu-item">
-              <span>Support</span>
-            </div>
+            <button id="support-button" class="menu-item">Support</button>
           </div>
         </nav>
-
-        <!-- Hero Section -->
-        <section>
-          <div
-            style="background-image: url(&quot;./assets/images/hero.jpg&quot;)"
-            class="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center bg-cover bg-fixed bg-center"
-          >
-            <div
-              class="rounded-xl bg-white/30 px-4 py-2 text-center backdrop-blur-md"
-            >
-              <figure class="relative">
-                <img
-                  src="./assets/images/logo.png"
-                  alt="Big logo of tailwind music festival"
-                  width="175"
-                />
-                <div class="mt-[-70px] mb-5 flex items-center justify-center">
-                  <div
-                    class="flex size-14 items-center justify-center gap-1 rounded-full bg-pink-500"
-                  >
-                    <div
-                      class="animate-wavey h-2 w-1 rounded-full bg-pink-300"
-                    ></div>
-                    <div
-                      class="animate-wavey animation-delay-100 h-3 w-1 rounded-full bg-pink-200"
-                    ></div>
-                    <div
-                      class="animate-wavey animation-delay-150 h-4 w-1 rounded-full bg-pink-100"
-                    ></div>
-                    <div
-                      class="animate-wavey animation-delay-300 h-3 w-1 rounded-full bg-pink-200"
-                    ></div>
-                    <div
-                      class="animate-wavey animation-delay-75 h-2 w-1 rounded-full bg-pink-300"
-                    ></div>
-                  </div>
-                </div>
-              </figure>
-              <h2>tw:<span class="text-sky-900">mf</span></h2>
-            </div>
-            <div class="mt-3 text-sm font-bold">
-              Keep me updated with news and promotions
-            </div>
-            <form class="mt-3 flex gap-2" role="form">
-              <input
-                name="email"
-                type="email"
-                placeholder="Email"
-                class="rounded-sm border border-white/40 bg-white/30 p-2 font-bold text-sky-900 placeholder-zinc-200 caret-pink-500 outline-pink-500 backdrop-blur-md focus:outline"
-                aria-label="Email input field"
-                autocomplete="email"
-              />
-              <button
-                type="submit"
-                class="cursor-pointer rounded-sm bg-pink-500 px-4 py-2 font-bold transition-colors hover:bg-sky-900 hover:shadow-lg hover:shadow-black/20"
-                aria-label="Subscribe button"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </section>
       </header>
+
+      <!-- Hero Section -->
+      <section class="text-zinc-200">
+        <div
+          style="background-image: url(&quot;./assets/images/hero.jpg&quot;)"
+          class="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center bg-cover bg-fixed bg-center"
+        >
+          <div
+            class="rounded-xl bg-white/30 px-4 py-2 text-center backdrop-blur-md"
+          >
+            <figure class="relative">
+              <img
+                src="./assets/images/logo.png"
+                alt="Big logo of tailwind music festival"
+                width="175"
+              />
+              <div class="mt-[-70px] mb-5 flex items-center justify-center">
+                <div
+                  class="flex size-14 items-center justify-center gap-1 rounded-full bg-pink-500"
+                >
+                  <div
+                    class="animate-wavey h-2 w-1 rounded-full bg-pink-300"
+                  ></div>
+                  <div
+                    class="animate-wavey animation-delay-100 h-3 w-1 rounded-full bg-pink-200"
+                  ></div>
+                  <div
+                    class="animate-wavey animation-delay-150 h-4 w-1 rounded-full bg-pink-100"
+                  ></div>
+                  <div
+                    class="animate-wavey animation-delay-300 h-3 w-1 rounded-full bg-pink-200"
+                  ></div>
+                  <div
+                    class="animate-wavey animation-delay-75 h-2 w-1 rounded-full bg-pink-300"
+                  ></div>
+                </div>
+              </div>
+            </figure>
+            <h2>tw:<span class="text-sky-900">mf</span></h2>
+          </div>
+          <div class="mt-3 text-sm font-bold">
+            Keep me updated with news and promotions
+          </div>
+          <form class="mt-3 flex gap-2" role="form">
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              class="rounded-sm border border-white/40 bg-white/30 p-2 font-bold text-sky-900 placeholder-zinc-200 caret-pink-500 outline-pink-500 backdrop-blur-md focus:outline"
+              aria-label="Email input field"
+              autocomplete="email"
+            />
+            <button
+              type="submit"
+              class="cursor-pointer rounded-sm bg-pink-500 px-4 py-2 font-bold transition-colors hover:bg-sky-900 hover:shadow-lg hover:shadow-black/20"
+              aria-label="Subscribe button"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
 
       <div class="container mx-auto mt-20 text-zinc-900 dark:text-zinc-200">
         <!-- Headliners section -->
@@ -353,8 +455,7 @@
           </div>
         </section>
 
-        <!-- Lineup -->
-        <section>
+        <section id="lineup-section">
           <h2 class="mt-20">Lineup</h2>
           <p>
             Follow the timetable and stage to ensure you don't miss your
@@ -461,8 +562,7 @@
           </div>
         </section>
 
-        <!-- Tickets Table -->
-        <section>
+        <section id="tickets-section">
           <h2 class="mt-20">Tickets</h2>
           <table
             class="mt-5 table w-full border-collapse border border-zinc-500"
@@ -504,6 +604,11 @@
               Once they're gone, they're gone!
             </caption>
           </table>
+        </section>
+
+        <section id="support-section">
+          <h2 class="mt-20">Support</h2>
+          <p>For support, contact us.</p>
         </section>
       </div>
     </main>
